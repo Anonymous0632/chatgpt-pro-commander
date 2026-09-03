@@ -1,0 +1,7 @@
+interface:
+  display_name: "ChatGPT Pro Commander"
+  short_description: "Web Pro plans and reviews; Codex executes and tests"
+  default_prompt: "Use $chatgpt-pro-commander to let the verified ChatGPT Web Pro mode plan and review this task while Codex executes locally."
+
+policy:
+  allow_implicit_invocation: true

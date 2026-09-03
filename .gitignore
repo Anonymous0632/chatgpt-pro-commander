@@ -1,0 +1,24 @@
+# Local Python caches
+__pycache__/
+*.py[cod]
+
+# macOS metadata
+.DS_Store
+
+# Private task evidence and generated packages
+*-safety.json
+*-manifest.json
+*-source.zip
+*-bundle.md
+*.ledger.json
+
+# Browser and authentication state
+.env
+.env.*
+browser-profile/
+browser_state/
+session-storage/
+local-storage/
+storage-state.json
+auth.json
+cookies*

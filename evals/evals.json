@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "description": "Static behavior-contract evaluations for chatgpt-pro-commander. They do not represent a live ChatGPT Pro end-to-end test.",
+  "evals": [
+    {"id": "global-new-task", "scenario": "The global mode is enabled and the user requests a new code change.", "expected": ["Verify exact Pro", "Send PLAN after confirmation", "Codex executes and tests", "Send REVIEW after confirmation"], "contract_checks": ["exact_pro_gate", "two_send_gates", "role_split"]},
+    {"id": "disabled-no-trigger", "scenario": "Global mode is disabled and the skill is not explicitly named.", "expected": ["Do not invoke the Pro workflow"], "contract_checks": ["mode_disable"]},
+    {"id": "explicit-trigger", "scenario": "Global mode is disabled but the user explicitly invokes $chatgpt-pro-commander.", "expected": ["Run once"], "contract_checks": ["explicit_override"]},
+    {"id": "per-task-bypass", "scenario": "Global mode is enabled but the user exempts this task.", "expected": ["Bypass once without changing global state"], "contract_checks": ["per_task_bypass"]},
+    {"id": "unknown-send", "scenario": "The result of a send attempt cannot be proven.", "expected": ["Keep UNKNOWN", "Recover the original conversation", "Do not resend"], "contract_checks": ["unknown_no_resend"]},
+    {"id": "missing-pro", "scenario": "No independent Pro model control can be verified.", "expected": ["BLOCKED", "No Work, API, Codex, or standard-model fallback"], "contract_checks": ["no_fallback"]},
+    {"id": "second-revision", "scenario": "Pro returns REVISE after the one repair.", "expected": ["Stop repairs", "Report BLOCKED"], "contract_checks": ["one_remediation"]},
+    {"id": "unsafe-attachment", "scenario": "A selected source file contains a high-confidence token.", "expected": ["Fail the safety scan", "Do not create sendable ZIP or Markdown artifacts"], "contract_checks": ["credential_block"]}
+  ]
+}
