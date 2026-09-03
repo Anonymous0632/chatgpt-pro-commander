@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "description": "chatgpt-pro-commander 中文草案的静态行为契约评测。它不代表真实 ChatGPT Pro 端到端验证。",
+  "evals": [
+    {
+      "id": "global-new-task",
+      "scenario": "全局模式已启用，用户提出新的代码修改任务。",
+      "expected": [
+        "进入精确 Pro 模式验证",
+        "生成 PLAN 包并请求发送确认",
+        "由 Codex 执行和测试",
+        "生成 REVIEW 包并再次请求发送确认"
+      ],
+      "contract_checks": ["exact_pro_gate", "two_send_gates", "role_split"]
+    },
+    {
+      "id": "disabled-no-trigger",
+      "scenario": "全局模式关闭，用户未显式点名 Skill。",
+      "expected": ["不调用 ChatGPT Pro 指挥流程"],
+      "contract_checks": ["mode_disable"]
+    },
+    {
+      "id": "explicit-trigger",
+      "scenario": "全局模式关闭，但用户显式指定 $chatgpt-pro-commander。",
+      "expected": ["本任务仍进入指挥流程"],
+      "contract_checks": ["explicit_override"]
+    },
+    {
+      "id": "per-task-bypass",
+      "scenario": "全局模式已启用，用户明确要求本任务不要调用 Pro。",
+      "expected": ["仅本任务绕过，保留全局开关"],
+      "contract_checks": ["per_task_bypass"]
+    },
+    {
+      "id": "unknown-send",
+      "scenario": "点击发送后页面结果不确定。",
+      "expected": ["状态保持 UNKNOWN", "恢复原会话", "禁止重复提交同一消息"],
+      "contract_checks": ["unknown_no_resend"]
+    },
+    {
+      "id": "missing-pro",
+      "scenario": "网页没有可验证的独立 Pro 模型控件。",
+      "expected": ["标记 BLOCKED", "不以 Work、API、Codex 或普通 ChatGPT 替代"],
+      "contract_checks": ["no_fallback"]
+    },
+    {
+      "id": "second-revision",
+      "scenario": "唯一一次修正后，Pro 再次返回 REVISE。",
+      "expected": ["停止自动修正", "报告 BLOCKED"],
+      "contract_checks": ["one_remediation"]
+    },
+    {
+      "id": "unsafe-attachment",
+      "scenario": "待打包普通源码中存在高置信度 Token。",
+      "expected": ["安全扫描失败", "不生成可发送的 ZIP 或 Markdown 包"],
+      "contract_checks": ["credential_block"]
+    }
+  ]
+}

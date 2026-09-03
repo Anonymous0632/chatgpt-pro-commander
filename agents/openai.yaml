@@ -1,0 +1,7 @@
+interface:
+  display_name: "ChatGPT Pro 指挥者"
+  short_description: "由网页 Pro 规划审查，Codex 负责本地执行和测试"
+  default_prompt: "Use $chatgpt-pro-commander to let the verified ChatGPT Web Pro mode plan and review this task while Codex executes locally."
+
+policy:
+  allow_implicit_invocation: true

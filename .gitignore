@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+*.zip
+*.ledger.json
+*.manifest.json
+*.sha256
+evidence/
+packets/
+browser-state/
+auth-state/
+cookies*
+storage-state*
